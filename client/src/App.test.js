@@ -1,1 +1,10 @@
 // Этот код представляет собой тест для React-приложения, написанный с использованием Jest (который поставляется вместе с Create React App). Он проверяет, что главный компонент <App /> успешно рендерится и затем корректно удаляется из DOM
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './App';
+
+it('renders without crashing', () => {
+  const div = document.createElement('div');
+  ReactDOM.render(<App />, div);
+  ReactDOM.unmountComponentAtNode(div);
+});
