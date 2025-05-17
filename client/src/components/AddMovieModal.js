@@ -18,15 +18,17 @@ import {
 import { connect } from 'react-redux';
 import { addMovie } from '../actions/movieActions';
 
+// Компонент модального окна для добавления нового фильма
 class AddMovieModal extends Component {
     state = {
-        modal: false,
-        title: '',
-        format: 'VHS',
-        year: 1800,
-        stars: ['']
+        modal: false,       // Видимость модального окна
+        title: '',          // Название фильма
+        format: 'VHS',      // Формат фильма (по умолчанию VHS)
+        year: 1800,         // Год выпуска (по умолчанию 1800)
+        stars: ['']         // Список актеров (начальное значение - пустая строка)
     };
 
+    // Переключение видимости модального окна и сброс формы
     toggle = () => {
         this.setState({
             modal: !this.state.modal,
@@ -37,24 +39,28 @@ class AddMovieModal extends Component {
         });
     };
 
+    // Обработчик изменения названия фильма
     onTitleChange = (event) => {
         this.setState({
             title: event.target.value
         });
     };
 
+    // Обработчик изменения года выпуска
     onYearChange = (event) => {
         this.setState({
             year: event.target.value
         })
     };
 
+    // Обработчик изменения формата фильма
     onFormatChange = (event) => {
         this.setState({
             format: event.target.value
         });
     };
 
+    // Обработчик изменения данных об актере
     onStarChange = (event, index) => {
         const stars = this.state.stars;
         stars[index] = event.target.value;
@@ -64,12 +70,14 @@ class AddMovieModal extends Component {
         })
     };
 
+    // Добавление нового поля для актера
     addStar = () => {
         this.setState({
             stars: [...this.state.stars, '']
         });
     };
 
+    // Удаление поля актера
     removeStar = (event, index) => {
         event.preventDefault();
 
@@ -79,9 +87,11 @@ class AddMovieModal extends Component {
         });
     };
 
+    // Отправка формы
     onSubmit = e => {
         e.preventDefault();
 
+        // Формируем объект фильма из данных состояния
         const movie = {
             title: this.state.title,
             year: this.state.year,
@@ -89,36 +99,39 @@ class AddMovieModal extends Component {
             stars: this.state.stars
         };
 
+        // Вызываем action для добавления фильма
         this.props.addMovie(movie)
             .then(() => {
+                // Закрываем модальное окно после успешного добавления
                 this.setState({
                     modal: false
                 });
             })
-            .catch((error) => (alert(error.response.data)));
+            .catch((error) => (alert(error.response.data))); // Обработка ошибок
     };
 
     render() {
         return (
             <Container>
+                {/* Ссылка для открытия модального окна */}
                 <NavLink
                     className="navigation-link"
                     color="light"
-                    onClick={ this.toggle }>
+                    onClick={this.toggle}>
                     Add Movie
                 </NavLink>
 
+                {/* Модальное окно для добавления фильма */}
                 <Modal
-                    isOpen={ this.state.modal }
-                    toggle={ this.toggle }>
-                    <ModalHeader
-                        toggle={ this.toggle }>
+                    isOpen={this.state.modal}
+                    toggle={this.toggle}>
+                    <ModalHeader toggle={this.toggle}>
                         Add Movie
                     </ModalHeader>
                     <ModalBody>
-                        <Form
-                            onSubmit={ this.onSubmit }>
+                        <Form onSubmit={this.onSubmit}>
                             <FormGroup>
+                                {/* Поле для названия фильма */}
                                 <Input
                                     id="title"
                                     name="title"
@@ -126,7 +139,9 @@ class AddMovieModal extends Component {
                                     required
                                     maxLength="100"
                                     placeholder="Title"
-                                    onChange={ this.onTitleChange }/>
+                                    onChange={this.onTitleChange} />
+
+                                {/* Поле для года выпуска */}
                                 <Input
                                     id="year"
                                     name="year"
@@ -136,55 +151,58 @@ class AddMovieModal extends Component {
                                     max="3000"
                                     placeholder="Year"
                                     className="mt-3"
-                                    onChange={ this.onYearChange }/>
-                                <Label
-                                    for="format"
-                                    className="mt-3">
+                                    onChange={this.onYearChange} />
+
+                                {/* Выпадающий список форматов */}
+                                <Label for="format" className="mt-3">
                                     Format
                                 </Label>
                                 <Input
                                     type="select"
                                     name="format"
-                                    onChange={ this.onFormatChange }>
+                                    onChange={this.onFormatChange}>
                                     <option>VHS</option>
                                     <option>DVD</option>
                                     <option>Blu-Ray</option>
                                 </Input>
-                                <Label
-                                    className="mt-3">
+
+                                {/* Список актеров с возможностью добавления/удаления */}
+                                <Label className="mt-3">
                                     Stars
                                 </Label>
-                                { this.state.stars.map((star, index) => {
-                                        return (
-                                            <div
-                                                key={ index }
-                                                className="mb-3">
-                                                <InputGroup>
-                                                    <Input
-                                                        type="text"
-                                                        value={ star }
-                                                        onChange={ (event) => (this.onStarChange(event, index)) }
-                                                        placeholder="Name & Surname"
-                                                        required
-                                                        maxLength="100"/>
-                                                    <InputGroupAddon
-                                                        addonType="append">
-                                                        <Button
-                                                            color="dark"
-                                                            className="fa fa-trash"
-                                                            onClick={ (event) => (this.removeStar(event, index)) }/>
-                                                    </InputGroupAddon>
-                                                </InputGroup>
-                                            </div>
-                                        )
-                                    }) }
+                                {this.state.stars.map((star, index) => {
+                                    return (
+                                        <div key={index} className="mb-3">
+                                            <InputGroup>
+                                                <Input
+                                                    type="text"
+                                                    value={star}
+                                                    onChange={(event) => (this.onStarChange(event, index))}
+                                                    placeholder="Name & Surname"
+                                                    required
+                                                    maxLength="100" />
+                                                {/* Кнопка удаления актера */}
+                                                <InputGroupAddon addonType="append">
+                                                    <Button
+                                                        color="dark"
+                                                        className="fa fa-trash"
+                                                        onClick={(event) => (this.removeStar(event, index))} />
+                                                </InputGroupAddon>
+                                            </InputGroup>
+                                        </div>
+                                    )
+                                })}
+
+                                {/* Кнопка добавления нового поля для актера */}
                                 <Button
                                     color="dark"
                                     outline
                                     block
-                                    onClick={ this.addStar }>
+                                    onClick={this.addStar}>
                                     Add Star
                                 </Button>
+
+                                {/* Кнопка отправки формы */}
                                 <Button
                                     color="dark"
                                     block
@@ -201,10 +219,12 @@ class AddMovieModal extends Component {
     }
 }
 
+// Подключение к Redux store
 const mapStateToProps = state => ({
     movie: state.movie
 });
 
+// Экспорт компонента с подключенным action addMovie
 export default connect(
     mapStateToProps,
     { addMovie }
