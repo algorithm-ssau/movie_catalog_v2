@@ -1,140 +1,124 @@
-// Этот код представляет собой компонент FileUploadModal, который реализует функциональность загрузки файлов с фильмами в React-приложении с использованием Redux
 import React, { Component } from 'react';
 import {
-  Alert,
-  Button,
-  Form,
-  FormGroup,
-  CustomInput,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  NavLink,
-  Container
+	Alert,
+	Button,
+	Form,
+	FormGroup,
+	CustomInput,
+	Modal,
+	ModalHeader,
+	ModalBody,
+	NavLink,
+	Container
 } from 'reactstrap';
 
 import { uploadMovies } from '../actions/movieActions';
 import { connect } from 'react-redux';
 
-// Компонент модального окна для загрузки файлов с фильмами
 class FileUploadModal extends Component {
-  state = {
-    modal: false,          // Видимость модального окна
-    file: null,           // Выбранный файл
-    label: 'Choose file', // Текст для кнопки выбора файла
-    alertIsOpen: false,   // Видимость уведомления
-    alertColor: null,     // Цвет уведомления (success/danger)
-    alertText: ''         // Текст уведомления
-  };
+	state = {
+		modal: false,
+		file: null,
+		label: 'Choose file',
+		alertIsOpen: false,
+		alertColor: null,
+		alertText: ''
+	};
 
-  // Переключение видимости модального окна и сброс состояния
-  toggle = () => {
-    this.setState({
-      modal: !this.state.modal,
-      file: null,
-      label: 'Choose file',
-      alertIsOpen: false
-    });
-  };
+	toggle = () => {
+		this.setState({
+			modal: !this.state.modal,
+			file: null,
+			label: 'Choose file',
+			alertIsOpen: false
+		});
+	};
 
-  // Обработчик выбора файла
-  onFileSelect = event => {
-    this.setState({
-      file: event.target.files[0], // Сохраняем выбранный файл
-      label: event.target.files[0].name // Обновляем текст кнопки
-    })
-  };
+	onFileSelect = event => {
+		this.setState({
+			file: event.target.files[0],
+			label: event.target.files[0].name
+		})
+	};
 
-  // Обработчик загрузки файла
-  onFileUpload = () => {
-    if (this.state.file) {
-      // Создаем объект FormData для отправки файла
-      const data = new FormData();
-      data.append('movies', this.state.file, this.state.file.name);
+	onFileUpload = () => {
+		if (this.state.file)
+		{
+			const data = new FormData();
+			data.append('movies', this.state.file, this.state.file.name);
 
-      // Формируем объект файла для отправки
-      const file = {
-        entity: this.state.file,
-        name: this.state.file.name
-      };
+			const file = {
+				entity: this.state.file,
+				name: this.state.file.name
+			};
 
-      // Вызываем action для загрузки файла
-      this.props.uploadMovies(file)
-        .then(() => (this.setState({
-          alertIsOpen: true,
-          alertColor: 'success',
-          alertText: 'Successfully uploaded' // Успешная загрузка
-        })))
-        .catch((error) => (this.setState({
-          alertIsOpen: true,
-          alertColor: 'danger',
-          alertText: error.response.data // Ошибка загрузки
-        })));
-    }
-  };
+			this.props.uploadMovies(file)
+				.then(() => (this.setState({
+					alertIsOpen: true,
+					alertColor: 'success',
+					alertText: 'Successfully uploaded'
+				})))
+				.catch((error) => (this.setState({
+					alertIsOpen: true,
+					alertColor: 'danger',
+					alertText: error.response.data
+				})));
+		}
+	};
 
-  render() {
-    return (
-      <Container>
-        {/* Ссылка для открытия модального окна */}
-        <NavLink
-          className="navigation-link"
-          color="light"
-          onClick={this.toggle}>
-          Upload File
-        </NavLink>
+	render() {
+		return (
+			<Container>
+				<NavLink
+					className="navigation-link"
+					color="light"
+					onClick={ this.toggle }>
+					Upload File
+				</NavLink>
 
-        {/* Модальное окно загрузки файла */}
-        <Modal
-          isOpen={this.state.modal}
-          toggle={this.toggle}>
-          <ModalHeader toggle={this.toggle}>
-            File Upload
-          </ModalHeader>
-          <ModalBody>
-            <Form>
-              <FormGroup>
-                {/* Поле выбора файла */}
-                <CustomInput
-                  type="file"
-                  name="movies"
-                  id="moviesFileUpload"
-                  onChange={this.onFileSelect}
-                  label={this.state.label} // Динамическая подпись
-                />
-                
-                {/* Кнопка загрузки файла */}
-                <Button
-                  className="mt-3"
-                  onClick={this.onFileUpload}
-                  color="dark"
-                  block>
-                  Upload
-                </Button>
-                
-                {/* Уведомление о результате операции */}
-                <Alert
-                  className="mt-3"
-                  color={this.state.alertColor}
-                  isOpen={this.state.alertIsOpen}>
-                  {this.state.alertText}
-                </Alert>
-              </FormGroup>
-            </Form>
-          </ModalBody>
-        </Modal>
-      </Container>
-    );
-  }
+				<Modal
+					isOpen={ this.state.modal }
+					toggle={ this.toggle }>
+					<ModalHeader
+						toggle={ this.toggle }>
+						File Upload
+					</ModalHeader>
+					<ModalBody>
+						<Form>
+							<FormGroup>
+								<CustomInput
+									type="file"
+									name="movies"
+									id="moviesFileUpload"
+									onChange={ this.onFileSelect }
+									label={ this.state.label }/>
+								<Button
+									className="mt-3"
+									onClick={ this.onFileUpload }
+									color="dark"
+									block>
+									Upload
+								</Button>
+								<Alert
+									className="mt-3"
+									color={ this.state.alertColor }
+									isOpen={ this.state.alertIsOpen }>
+									{ this.state.alertText }
+								</Alert>
+							</FormGroup>
+						</Form>
+					</ModalBody>
+				</Modal>
+			</Container>
+		);
+	}
 }
 
-// Подключение к Redux store
 const mapStateToProps = state => ({
-  file: state.file
+	file: state.file
 });
 
-// Экспорт компонента с подключенным action uploadMovies
 export default connect(
-  mapStateToProps,
-  { uploadMovies }
+	mapStateToProps,
+	{ uploadMovies }
 )(FileUploadModal);

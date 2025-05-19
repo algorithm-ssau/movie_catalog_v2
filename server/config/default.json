@@ -1,9 +1,10 @@
 {
 	"server" : {
-		"host" : "localhost",
+		"host" : "0.0.0.0",
 		"port" : 5000
 	},
 	"database" : {
 		"uri": "mongodb+srv://nazarshow69:4wkDJBv74qFYtxpo@cluster0.l428yt7.mongodb.net/movie_site?retryWrites=true&w=majority&appName=Cluster0"
 	}
 }
+ 

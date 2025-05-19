@@ -1,4 +1,3 @@
-// Этот код предоставляет функциональность для регистрации Service Worker в приложениях, созданных с помощью Create React App (CRA). Service Worker - это ключевая технология для Progressive Web Apps (PWA), которая позволяет приложению работать оффлайн и загружаться быстрее при повторных посещениях.
 // This optional code is used to register a service worker.
 // register() is not called by default.
 

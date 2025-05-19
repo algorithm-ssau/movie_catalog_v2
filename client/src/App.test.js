@@ -1,19 +1,9 @@
-// Этот код представляет собой тест для React-приложения, написанный с использованием Jest (который поставляется вместе с Create React App). Он проверяет, что главный компонент <App /> успешно рендерится и затем корректно удаляется из DOM
-// Импортируем необходимые библиотеки
-import React from 'react'; // Основная библиотека React
-import ReactDOM from 'react-dom'; // Для рендеринга в DOM
-import App from './App'; // Главный компонент приложения, который будем тестировать
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './App';
 
-// Базовый тест для проверки рендеринга компонента
 it('renders without crashing', () => {
-  // Создаем временный div-элемент в DOM для тестирования
   const div = document.createElement('div');
-  
-  // Пытаемся отрендерить главный компонент App в созданный div
   ReactDOM.render(<App />, div);
-  
-  // Удаляем компонент из DOM после теста (очистка)
   ReactDOM.unmountComponentAtNode(div);
-  
-  // Если код дошел до этой точки без ошибок - тест пройден успешно
 });
